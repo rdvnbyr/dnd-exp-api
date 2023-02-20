@@ -9,8 +9,7 @@ const connectDB = async (req, res, next) => {
     .then((conn) =>
       console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold)
     )
-    .catch((err) => console.error(`Error: ${err.message}`.red))
-    .finally(() => mongoose.connection.close());
+    .catch((err) => console.error(`Error: ${err.message}`.red));
 };
 
 module.exports = connectDB;

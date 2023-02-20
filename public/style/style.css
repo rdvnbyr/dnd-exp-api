@@ -1,0 +1,112 @@
+:root {
+  --primary-color: #7026ed;
+  --secondary-color: #f8642f;
+  --info-color: #1a033b;
+  --success-color: #4caf50;
+  --warning-color: #ffb74a;
+  --danger-color: #f44336;
+  --light-color: #dde2ff;
+  --dark-color: #2f2f2f;
+  --white-color: #fff;
+  --black-color: #000;
+  --gray-color: #888;
+  --gray-light-color: #f1f1f1;
+  --gray-dark-color: #555;
+  --text-color: #2f2f2f;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+main {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+p {
+  font-size: 1rem;
+}
+
+h1,h2,h3 {
+  font-weight: 500;
+  margin: 1rem 0;
+}
+
+.btn {
+  background-color: var(--text-color);
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--primary-color);
+}
+.btn-secondary {
+  background-color: var(--secondary-color);
+}
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: rgba(var(--secondary-color), 0.8);
+}
+
+.btn-info {
+  background-color: var(--info-color);
+}
+.btn-info:hover,
+.btn-info:focus {
+  background-color: rgba(var(--info-color), 0.8);
+}
+
+.btn-success {
+  background-color: var(--success-color);
+}
+.btn-success:hover,
+.btn-success:focus {
+  background-color: rgba(var(--success-color), 0.8);
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+}
+.btn-warning:hover,
+.btn-warning:focus {
+  background-color: rgba(var(--warning-color), 0.8);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+}
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: rgba(var(--danger-color), 0.8);
+}
