@@ -5,10 +5,14 @@ const protect = async (req, res, next) => {
   try {
     let token = null;
     const { authorization } = req.headers;
-    if (!authorization) {
-      token = req.query['access_token'];
-    } else {
+    if (
+      authorization &&
+      authorization.startsWith('Bearer') &&
+      authorization.split(' ').length === 2
+    ) {
       token = authorization.split(' ')[1];
+    } else {
+      token = req.query['access_token'];
     }
     if (!token && typeof token != 'string')
       throw createError(401, 'Authentication failed');
