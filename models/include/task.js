@@ -26,7 +26,8 @@ const TaskSchema = new mongoose.Schema(
       default: [],
     },
     attachments: {
-      type: [String],
+      type: [mongoose.Schema.ObjectId],
+      ref: 'Attachment',
       default: [],
     },
     joinedUsers: {

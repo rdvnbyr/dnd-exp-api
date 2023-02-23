@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { validateWorkspace } = require('../middleware/validator');
+
 const {
   createWorkspace,
   getWorkspaces,
@@ -15,7 +17,7 @@ const {
  * @access  Private (token required)
  * @returns {message} string message
  */
-router.post('/', createWorkspace);
+router.post('/', validateWorkspace, createWorkspace);
 
 /**
  * @route   GET api/workspaces

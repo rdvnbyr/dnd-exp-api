@@ -7,7 +7,7 @@ const createUser = async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
     const hashedPassword = await bcryptService.hash(password);
-    const checkUniqeEmail = User.findOne({ email: email });
+    const checkUniqeEmail = await User.findOne({ email: email });
     if (checkUniqeEmail) {
       throw createError(400, 'Email already exists');
     }
@@ -18,6 +18,7 @@ const createUser = async (req, res, next) => {
       role: 'user',
     });
     await user.save();
+    res.status(201).json({ message: 'User created' });
   } catch (err) {
     next(err);
   }
@@ -34,7 +35,7 @@ const login = async (req, res, next) => {
     if (!isMatch) {
       throw createError(400, 'Invalid credentials');
     }
-    const token = jwtService.sign({
+    const token = await jwtService.sign({
       id: user._id,
       email: user.email,
       role: user.role,

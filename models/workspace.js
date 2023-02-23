@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('express-validator');
 
 const WorkspaceSchema = new mongoose.Schema(
   {
@@ -25,6 +26,7 @@ const WorkspaceSchema = new mongoose.Schema(
           enum: ['admin', 'member', 'observer'],
           default: 'member',
         },
+        _id: false,
       },
     ],
     boards: [

@@ -18,7 +18,7 @@ const {
  * @returns {error} 400 if email already exists
  * @returns {error} 500 if server error
  */
-router.post('/', createUser);
+router.post('/register', createUser);
 
 /**
  * @route   POST api/users/login

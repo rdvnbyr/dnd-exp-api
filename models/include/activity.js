@@ -6,7 +6,12 @@ const ActivitySchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       auto: true,
     },
-    attachments: [String],
+    attachments: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Attachment',
+      },
+    ],
     comment: {
       type: String,
       required: true,

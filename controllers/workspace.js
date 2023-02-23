@@ -1,10 +1,13 @@
 const Workspace = require('../models/Workspace');
-const Board = require('../models/Board');
+const Board = require('../models/board');
 const createError = require('http-errors');
 const _ = require('lodash');
+const { validationResult } = require('express-validator');
 
 const createWorkspace = async (req, res, next) => {
   try {
+    const result = validationResult(req);
+    // console.log(result);
     const workspace = new Workspace(req.body);
     await workspace.save();
     res.status(200).json({ message: 'Workspace created' });
@@ -15,18 +18,10 @@ const createWorkspace = async (req, res, next) => {
 
 const getWorkspaces = async (req, res, next) => {
   try {
-    const params = req.query;
-    const where = { users: { $elemMatch: { userId: req.user_credentials.id } } };
-    Object.keys(where).forEach((key) => {
-      params[key] = {
-        ...params[key],
-        where: {
-          ...params[key].where,
-          ...where[key],
-        },
-      };
+    const where = { 'users.userId': req.user_credentials.id };
+    const workspaces = await Workspace.find({
+      $or: [{ owner: req.user_credentials.id }, where],
     });
-    const workspaces = await Workspace.find({ ...params });
     res.status(200).json(workspaces);
   } catch (err) {
     next(err);

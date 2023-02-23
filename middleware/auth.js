@@ -3,8 +3,15 @@ const jwtService = require('../services/jwt');
 
 const protect = async (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) throw createError(401, 'Authentication failed');
+    let token = null;
+    const { authorization } = req.headers;
+    if (!authorization) {
+      token = req.query['access_token'];
+    } else {
+      token = authorization.split(' ')[1];
+    }
+    if (!token && typeof token != 'string')
+      throw createError(401, 'Authentication failed');
     const decodedToken = await jwtService.verify(token);
     req.user_credentials = decodedToken;
     next();

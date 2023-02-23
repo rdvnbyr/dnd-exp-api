@@ -16,11 +16,20 @@ const ListSchema = new mongoose.Schema(
       type: [TaskSchema],
       default: [],
     },
-    joinedUsers: {
-      type: [mongoose.Schema.ObjectId],
-      ref: 'User',
-      default: [],
-    },
+    joinedUsers: [
+      {
+        userId: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
+        },
+        permissions: {
+          type: String,
+          enum: ['admin', 'member', 'observer'],
+          default: 'member',
+        },
+        _id: false,
+      },
+    ],
   },
   {
     timestamps: true,

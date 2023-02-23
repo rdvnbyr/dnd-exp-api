@@ -33,6 +33,7 @@ const BoardSchema = new mongoose.Schema(
           enum: ['admin', 'member', 'observer'],
           default: 'member',
         },
+        _id: false,
       },
     ],
   },
