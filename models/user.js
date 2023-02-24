@@ -28,6 +28,15 @@ const UserSchema = new mongoose.Schema(
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    licence: {
+      type: String,
+      enum: ['free', 'premium', 'enterprise', 'trial', 'expired'],
+      default: 'free',
+    },
+    avatar: {
+      type: String,
+      default: 'default-avatar.png',
+    },
   },
   {
     timestamps: true,

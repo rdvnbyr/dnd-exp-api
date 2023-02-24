@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Use routes
 app.use('/api/workspaces', protect, require('./routes/workspace'));
-app.use('/api/:workspaceId/boards', protect, isMember, require('./routes/board'));
+app.use('/api/boards', protect, isMember, require('./routes/board'));
 app.use('/api/users', require('./routes/user'));
 
 app.get('/', (req, res) => {

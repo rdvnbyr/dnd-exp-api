@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 
-const validateWorkspace = [
+const createWorkspaceValidator = [
   body('name')
     .isString()
     .notEmpty()
@@ -22,5 +22,5 @@ const validateWorkspace = [
 ];
 
 module.exports = {
-  validateWorkspace,
+  createWorkspaceValidator,
 };

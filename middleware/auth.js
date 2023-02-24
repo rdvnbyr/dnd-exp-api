@@ -17,7 +17,7 @@ const protect = async (req, res, next) => {
     if (!token && typeof token != 'string')
       throw createError(401, 'Authentication failed');
     const decodedToken = await jwtService.verify(token);
-    req.user_credentials = decodedToken;
+    req.currentUser = decodedToken;
     next();
   } catch (err) {
     next(createError(401, 'Authentication failed'));
@@ -26,7 +26,7 @@ const protect = async (req, res, next) => {
 
 const isAdmin = async (req, res, next) => {
   try {
-    if (req.user_credentials.role !== 'admin') {
+    if (req.currentUser.role !== 'admin') {
       throw createError(401, 'Not authorized');
     }
     next();
@@ -41,7 +41,7 @@ const isMember = async (req, res, next) => {
       _id: req.params.workspaceId,
       users: {
         $elemMatch: {
-          userId: req.user_credentials.id,
+          userId: req.currentUser.id,
         },
       },
     });
@@ -54,8 +54,24 @@ const isMember = async (req, res, next) => {
   }
 };
 
+const isOwner = async (req, res, next) => {
+  try {
+    const findUser = await Workspace.findOne({
+      _id: req.params.workspaceId,
+      owner: req.currentUser.id,
+    });
+    if (!findUser) {
+      throw createError(402, 'You are not the owner of this workspace resource.');
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   protect,
   isAdmin,
   isMember,
+  isOwner
 };

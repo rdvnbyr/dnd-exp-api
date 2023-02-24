@@ -55,7 +55,7 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
-    const findUser = await User.findById(req.user_credentials.id);
+    const findUser = await User.findById(req.currentUser.id);
     if (!findUser) {
       throw createError(404, 'User not found');
     }
@@ -67,7 +67,7 @@ const logout = async (req, res, next) => {
 
 const getMe = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user_credentials.id);
+    const user = await User.findById(req.currentUser.id);
     if (!user) {
       throw createError(404, 'User not found');
     }
@@ -84,7 +84,7 @@ const getMe = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { password, username, email } = req.body;
-    const findUser = await User.findById(req.user_credentials.id);
+    const findUser = await User.findById(req.currentUser.id);
     if (!findUser) {
       throw createError(404, 'User not found');
     }
@@ -115,7 +115,7 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const findUser = await User.findById(req.user_credentials.id);
+    const findUser = await User.findById(req.currentUser.id);
     if (!findUser) {
       throw createError(404, 'User not found');
     }

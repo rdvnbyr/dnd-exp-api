@@ -28,14 +28,21 @@ const BoardSchema = new mongoose.Schema(
           type: mongoose.Schema.ObjectId,
           ref: 'User',
         },
-        permissions: {
+        permission: {
           type: String,
-          enum: ['admin', 'member', 'observer'],
-          default: 'member',
+          enum: ['admin', 'member', 'observer', 'guest'],
+          default: 'guest',
         },
         _id: false,
       },
     ],
+
+    owner: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+
   },
   {
     timestamps: true,

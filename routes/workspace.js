@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { validateWorkspace } = require('../middleware/validator');
+const { createWorkspaceValidator } = require('../middleware/validator');
 
 const {
   createWorkspace,
@@ -10,6 +10,7 @@ const {
   updateWorkspace,
   deleteWorkspace,
 } = require('../controllers/workspace');
+const { isOwner } = require('../middleware/auth');
 
 /**
  * @route   POST api/workspaces
@@ -17,7 +18,7 @@ const {
  * @access  Private (token required)
  * @returns {message} string message
  */
-router.post('/', validateWorkspace, createWorkspace);
+router.post('/', createWorkspaceValidator, createWorkspace);
 
 /**
  * @route   GET api/workspaces
@@ -39,11 +40,11 @@ router.get('/:workspaceId', getWorkspace);
 /**
  * @route   PATCH api/workspaces/:workspaceId
  * @desc    Update a workspace
- * @access  Private (token required)
+ * @access  Private (token required) - user can only update his own workspaces
  * @returns {message} string message
  * @returns {error} 404 if workspace not found
  */
-router.patch('/:workspaceId', updateWorkspace);
+router.patch('/:workspaceId', isOwner, updateWorkspace);
 
 /**
  * @route   DELETE api/workspaces/:workspaceId
@@ -51,6 +52,6 @@ router.patch('/:workspaceId', updateWorkspace);
  * @access  Private (token required) - user can only delete his own workspaces
  * @returns {message} string message
  */
-router.delete('/:workspaceId', deleteWorkspace);
+router.delete('/:workspaceId', isOwner, deleteWorkspace);
 
 module.exports = router;
