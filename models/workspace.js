@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('express-validator');
 
 const WorkspaceSchema = new mongoose.Schema(
   {
@@ -15,20 +14,6 @@ const WorkspaceSchema = new mongoose.Schema(
       required: false,
       maxlength: [500, 'Description can not be more than 500 characters'],
     },
-    users: [
-      {
-        userId: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'User',
-        },
-        permission: {
-          type: String,
-          enum: ['admin', 'member', 'observer', 'guest'],
-          default: 'guest',
-        },
-        _id: false,
-      },
-    ],
     boards: [
       {
         type: mongoose.Schema.ObjectId,

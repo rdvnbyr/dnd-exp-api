@@ -18,16 +18,8 @@ const ListSchema = new mongoose.Schema(
     },
     joinedUsers: [
       {
-        userId: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'User',
-        },
-        permissions: {
-          type: String,
-          enum: ['admin', 'member', 'observer'],
-          default: 'member',
-        },
-        _id: false,
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
       },
     ],
   },

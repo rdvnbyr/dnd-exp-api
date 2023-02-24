@@ -14,8 +14,6 @@ const createWorkspaceValidator = [
     .isLength({ max: 500 })
     .withMessage('Description can not be more than 500 characters'),
 
-  body('users').isArray().withMessage('Users must be an array'),
-
   body('boards').isArray().withMessage('Boards must be an array'),
 
   body('owner').notEmpty().isMongoId().withMessage('Owner ID must be a valid Mongo ID'),

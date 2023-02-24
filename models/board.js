@@ -36,13 +36,6 @@ const BoardSchema = new mongoose.Schema(
         _id: false,
       },
     ],
-
-    owner: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-
   },
   {
     timestamps: true,
