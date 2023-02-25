@@ -11,9 +11,9 @@ const createWorkspace = async (req, res, next) => {
       throw createError(400, 'Validation failed', result.array());
     }
     const workspaceNameIsUse = Workspace.exists({ name: req.body.name });
-    if (workspaceNameIsUse) {
-      throw createError(400, 'Workspace name already exists');
-    }
+    // if (workspaceNameIsUse) {
+    //   throw createError(400, 'Workspace name already exists');
+    // }
     const workspace = new Workspace(req.body);
     await workspace.save();
     res.status(200).json({ message: 'Workspace created' });

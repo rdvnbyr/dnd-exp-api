@@ -3,7 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const db = require('./config/datasource');
-const { protect, isMember } = require('./middleware/auth');
+const { protect } = require('./middleware/auth');
 const swaggerDocument = require('./config/swagger.json');
 require('colors');
 
@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Use routes
 app.use('/api/workspaces', protect, require('./routes/workspace'));
-app.use('/api/boards', protect, isMember, require('./routes/board'));
+app.use('/api/boards', protect, require('./routes/board'));
 app.use('/api/users', require('./routes/user'));
 
 app.get('/', (req, res) => {
@@ -49,6 +49,10 @@ app.use(
     customCss: '.swagger-ui .topbar { display: none }',
   })
 );
+
+app.get('/open-api', (req, res) => {
+  res.sendFile(path.join(__dirname, 'config', "swagger.json" ));
+});
 
 const PORT = process.env.PORT || 8000;
 

@@ -3,7 +3,11 @@ const createError = require('http-errors');
 
 const createBoard = async (req, res, next) => {
   try {
-    const board = new Board(req.body);
+    const board = new Board({
+      ...req.body,
+      owner: req.currentUser.id,
+      users: [{ userId: req.currentUser.id }],
+    });
     await board.save();
     res.status(200).json({ message: 'Board created' });
   } catch (err) {
@@ -13,14 +17,15 @@ const createBoard = async (req, res, next) => {
 
 const getBoards = async (req, res, next) => {
   try {
-    const filterByUser = {
+    const filter = {
       users: {
         $elemMatch: {
           userId: req.currentUser.id,
         },
       },
+      ...(req.query.workspaceId && { workspaceId: req.query.workspaceId }),
     };
-    const boards = await Board.find(filterByUser).populate('workspaceId');
+    const boards = await Board.find(filter).populate('workspaceId');
     res.status(200).json(boards);
   } catch (err) {
     next(err);

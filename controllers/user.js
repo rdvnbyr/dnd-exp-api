@@ -33,7 +33,7 @@ const login = async (req, res, next) => {
     }
     const isMatch = await bcryptService.compare(password, user.password);
     if (!isMatch) {
-      throw createError(400, 'Invalid credentials');
+      throw createError(400, 'Invalid credentials password or email is wrong.');
     }
     const token = await jwtService.sign({
       id: user._id,
