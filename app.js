@@ -49,7 +49,6 @@ app.use((err, req, res, next) => {
 //     customCss: '.swagger-ui .topbar { display: none }',
 //   })
 // );
-
 // app.get('/open-api', (req, res) => {
 //   res.sendFile(path.join(__dirname, 'config', "swagger.json" ));
 // });
