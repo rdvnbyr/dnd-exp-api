@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const db = require('./config/datasource');
 const { protect } = require('./middleware/auth');
-// const swaggerDocument = require('./config/swagger.json');
+const swaggerDocument = require('./config/swagger.json');
 require('colors');
 
 dotenv.config();
@@ -35,25 +35,25 @@ app.use((err, req, res, next) => {
   });
 });
 
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
-
-// // create swagger docs
-// const swaggerUi = require('swagger-ui-express');
-// app.use(
-//   '/explorer',
-//   swaggerUi.serve,
-//   swaggerUi.setup(swaggerDocument, {
-//     explorer: true,
-//     customCss: '.swagger-ui .topbar { display: none }',
-//   })
-// );
-// app.get('/open-api', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'config', "swagger.json" ));
-// });
-
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// create swagger docs
+const swaggerUi = require('swagger-ui-express');
+app.use(
+  '/explorer',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    explorer: true,
+    customCss: '.swagger-ui .topbar { display: none }',
+  })
+);
+app.get('/open-api', (req, res) => {
+  res.sendFile(path.join(__dirname, 'config', "swagger.json" ));
+});
+
+app.get('/ping', (req, res) => {
   res.json({
     message: 'Welcome to the Dart Api',
     status: 'success',
