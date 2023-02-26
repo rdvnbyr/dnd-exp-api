@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const db = require('./config/datasource');
 const { protect } = require('./middleware/auth');
-const swaggerDocument = require('./config/swagger.json');
+// const swaggerDocument = require('./config/swagger.json');
 require('colors');
 
 dotenv.config();
@@ -27,10 +27,6 @@ app.use('/api/workspaces', protect, require('./routes/workspace'));
 app.use('/api/boards', protect, require('./routes/board'));
 app.use('/api/users', require('./routes/user'));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 // define glabal error handler
 app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
@@ -39,19 +35,32 @@ app.use((err, req, res, next) => {
   });
 });
 
-// create swagger docs
-const swaggerUi = require('swagger-ui-express');
-app.use(
-  '/explorer',
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, {
-    explorer: true,
-    customCss: '.swagger-ui .topbar { display: none }',
-  })
-);
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
-app.get('/open-api', (req, res) => {
-  res.sendFile(path.join(__dirname, 'config', "swagger.json" ));
+// // create swagger docs
+// const swaggerUi = require('swagger-ui-express');
+// app.use(
+//   '/explorer',
+//   swaggerUi.serve,
+//   swaggerUi.setup(swaggerDocument, {
+//     explorer: true,
+//     customCss: '.swagger-ui .topbar { display: none }',
+//   })
+// );
+
+// app.get('/open-api', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'config', "swagger.json" ));
+// });
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the Dart Api',
+    status: 'success',
+    data: null,
+    request: req.ip + ' ' + req.method + ' ' + req.originalUrl,
+  });
 });
 
 const PORT = process.env.PORT || 8000;
