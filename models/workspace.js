@@ -14,12 +14,6 @@ const WorkspaceSchema = new mongoose.Schema(
       required: false,
       maxlength: [500, 'Description can not be more than 500 characters'],
     },
-    boards: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Board',
-      },
-    ],
     owner: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',

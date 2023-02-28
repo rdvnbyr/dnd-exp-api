@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const MemberSchema = require('./member');
 const TaskSchema = require('./task');
 
 const ListSchema = new mongoose.Schema(
@@ -16,12 +17,7 @@ const ListSchema = new mongoose.Schema(
       type: [TaskSchema],
       default: [],
     },
-    joinedUsers: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-      },
-    ],
+    members: [MemberSchema],
   },
   {
     timestamps: true,

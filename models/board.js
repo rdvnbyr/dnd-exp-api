@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ListSchema = require('./include/lists');
+const MemberSchema = require('./include/member');
 
 const BoardSchema = new mongoose.Schema(
   {
@@ -18,20 +19,7 @@ const BoardSchema = new mongoose.Schema(
     },
 
     lists: [ListSchema],
-    users: [
-      {
-        userId: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'User',
-        },
-        permission: {
-          type: String,
-          enum: ['admin', 'member', 'observer', 'guest'],
-          default: 'guest',
-        },
-        _id: false,
-      },
-    ],
+    users: [MemberSchema],
 
     workspaceId: {
       type: mongoose.Schema.ObjectId,

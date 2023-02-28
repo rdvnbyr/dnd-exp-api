@@ -24,6 +24,36 @@ const protect = async (req, res, next) => {
   }
 };
 
+const protectGraphql = async (req, res, next) => {
+  try {
+    let token = null;
+    const { authorization } = req.headers;
+    if (
+      authorization &&
+      authorization.startsWith('Bearer') &&
+      authorization.split(' ').length === 2
+    ) {
+      token = authorization.split(' ')[1];
+    } else {
+      token = req.query['access_token'];
+    }
+    if (!token && typeof token != 'string') {
+      req.isAuth = false;
+      return next();
+    }
+    const decodedToken = await jwtService.verify(token);
+    if (!decodedToken) {
+      req.isAuth = false;
+      return next();
+    }
+    req.currentUser = decodedToken;
+    next();
+  } catch (err) {
+    req.isAuth = false;
+    next();
+  }
+};
+
 const isAdmin = async (req, res, next) => {
   try {
     if (req.currentUser.role !== 'admin') {
@@ -71,7 +101,8 @@ const isOwner = async (req, res, next) => {
 
 module.exports = {
   protect,
+  protectGraphql,
   isAdmin,
   isMember,
-  isOwner
+  isOwner,
 };

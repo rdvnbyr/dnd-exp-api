@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ActivitySchema = require('./activity');
+const MemberSchema = require('./member');
 
 const TaskSchema = new mongoose.Schema(
   {
@@ -30,11 +31,7 @@ const TaskSchema = new mongoose.Schema(
       ref: 'Attachment',
       default: [],
     },
-    joinedUsers: {
-      type: [mongoose.Schema.ObjectId],
-      ref: 'User',
-      default: [],
-    },
+    members: [MemberSchema],
   },
   {
     timestamps: true,
