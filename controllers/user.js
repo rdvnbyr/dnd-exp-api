@@ -93,10 +93,10 @@ const updateUser = async (req, res, next) => {
       findUser.password = hashedPassword;
     }
     if (username) {
-      findUser.username = body.username;
+      findUser.username = username;
     }
     if (email) {
-      findUser.email = body.email;
+      findUser.email = email;
     }
 
     await findUser.save();
