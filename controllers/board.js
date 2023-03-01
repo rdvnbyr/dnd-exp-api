@@ -1,14 +1,30 @@
 const Board = require('../models/board');
+const Workspace = require('../models/workspace');
 const createError = require('http-errors');
+const validator = require('validator');
 
 const createBoard = async (req, res, next) => {
   try {
+    const { workspaceId, ...restBody } = req.body;
+    if (validator.isEmpty(workspaceId)) {
+      throw createError(400, 'Invalid workspace id');
+    }
+    const workspace = await Worksppace.findById(workspaceId);
+    if (!workspace) {
+      throw createError(404, 'Workspace not found');
+    }
+    if (!workspace.users.find((user) => user.userId == req.currentUser.id)) {
+      throw createError(401, 'Not authorized to access this workspace resource.');
+    }
+    
     const board = new Board({
-      ...req.body,
+      ...restBody,
+      workspaceId,
       owner: req.currentUser.id,
       users: [{ userId: req.currentUser.id }],
     });
     await board.save();
+    await Workspace.findById();
     res.status(200).json({ message: 'Board created' });
   } catch (err) {
     next(err);

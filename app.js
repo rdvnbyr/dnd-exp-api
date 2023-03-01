@@ -34,7 +34,7 @@ app.use(
     schema: graphql.schemas,
     rootValue: graphql.resolvers,
     graphiql: true,
-    formatError(err) {
+    customFormatErrorFn(err) {
       if (!err.originalError) {
         return err;
       }
@@ -45,6 +45,7 @@ app.use(
     },
   })
 );
+
 
 // create swagger docs
 const swaggerUi = require('swagger-ui-express');

@@ -47,6 +47,7 @@ const protectGraphql = async (req, res, next) => {
       return next();
     }
     req.currentUser = decodedToken;
+    req.isAuth = true;
     next();
   } catch (err) {
     req.isAuth = false;

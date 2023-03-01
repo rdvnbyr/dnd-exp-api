@@ -2,13 +2,15 @@ const jwt = require('jsonwebtoken');
 
 class JwtService {
   constructor() {
-    this.defaultOptions = {
-      expiresIn: '12h',
-    };
+    this.defaultOptions = {};
   }
 
   async sign(payload, options) {
-    return jwt.sign(payload, process.env.JWT_SECRET, { ...this.defaultOptions, ...options });
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+      ...this.defaultOptions,
+      ...(options || {}),
+      expiresIn: process.env.JWT_EXPIRES_IN || '24h',
+    });
   }
 
   async verify(token) {

@@ -19,6 +19,12 @@ const WorkspaceSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    boards: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Board',
+      },
+    ],
   },
   {
     timestamps: true,

@@ -3,10 +3,15 @@ const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
 
-    type UserRelation {
-        userId: User!
-        permission: String
-        notified: Boolean
+    type Member {
+        userId: ID!
+        role: String!
+        permissions: [String!]!
+    }
+    input memberInput {
+        userId: ID!
+        role: String!
+        permissions: [String!]!
     }
 
     type User {
@@ -21,6 +26,23 @@ module.exports = buildSchema(`
         updatedAt: String!
         name: String
     }
+    input userInput {
+        email: String!
+        username: String!
+        password: String!
+        avatar: String
+        licence: String
+        role: String
+        name: String
+    }
+    input userUpdateInput {
+        username: String
+        password: String
+        avatar: String
+        licence: String
+        role: String
+        name: String
+    }
 
     type Workspace {
         _id: ID!
@@ -30,6 +52,17 @@ module.exports = buildSchema(`
         updatedAt: String!
         owner: User!
     }
+    input workspaceInput {
+        name: String!
+        description: String
+        owner: ID!
+        boards: [ID!]!
+    }
+    input workspaceUpdateInput {
+        name: String
+        description: String
+        boards: [ID!]
+    }
 
     type Attachment {
         _id: ID!
@@ -37,6 +70,14 @@ module.exports = buildSchema(`
         path: String!
         createdAt: String!
         updatedAt: String!
+    }
+    input attachmentInput {
+        name: String!
+        path: String!
+    }
+    input attachmentUpdateInput {
+        name: String
+        path: String
     }
 
     type Activity {
@@ -47,6 +88,15 @@ module.exports = buildSchema(`
         userId: User!
         attachments: [Attachment!]!
     }
+    input activityInput {
+        comment: String!
+        userId: ID!
+        attachments: [ID!]
+    }
+    input activityUpdateInput {
+        comment: String
+        attachments: [ID!]
+    }
 
     type Task {
         _id: ID!
@@ -54,20 +104,43 @@ module.exports = buildSchema(`
         description: String
         createdAt: String!
         updatedAt: String!
-        labels: [String!]!
-        attachments: [Attachment!]!
-        joiners: [UserRelation!]!
-        watchers: [UserRelation!]!
-        activities: [Activity!]!
+        labels: [String!]
+        attachments: [Attachment!]
+        members: [Member!]
+        activities: [Activity!]
+    }
+    input taskInput {
+        name: String!
+        description: String
+        labels: [String!]
+        attachments: [ID!]
+        members: [memberInput!]
+        activities: [activityInput!]
+    }
+    input taskUpdateInput {
+        name: String
+        description: String
+        labels: [String!]
+        attachments: [ID!]
+        members: [memberInput!]
+        activities: [activityInput!]
     }
 
     type List {
         _id: ID!
         name: String!
         tasks: [Task!]!
-        users: [UserRelation!]!
-        joiners: [UserRelation!]!
-        watchers: [UserRelation!]!
+        members: [Member!]
+    }
+    input listInput {
+        name: String!
+        tasks: [taskInput!]
+        members: [memberInput!]
+    }
+    input listUpdateInput {
+        name: String
+        tasks: [taskInput!]
+        members: [memberInput!]
     }
 
     type Board {
@@ -76,60 +149,33 @@ module.exports = buildSchema(`
         description: String
         createdAt: String!
         updatedAt: String!
-        owner: User!
-        workspaceId: Workspace!
-        users: [UserRelation!]!
+        owner: ID!
+        workspaceId: ID!
+        users: [Member!]!
         lists: [List!]!
+    }
+    input boardInput {
+        name: String!
+        description: String
+        owner: ID!
+        workspaceId: ID!
+        users: [memberInput!]!
+        lists: [listInput!]!
+    }
+    input boardUpdateInput {
+        name: String
+        description: String
+        users: [memberInput!]
+        lists: [listInput!]
     }
 
     type Message {
         message: String!
     }
 
-    input UserInput {
-        email: String!
-        username: String!
-        password: String!
-        avatar: String
-        licence: String
-        role: String
-        name: String
-    }
-
-    input UserUpdateInput {
-        username: String
-        password: String
-        avatar: String
-        licence: String
-        role: String
-        name: String
-    }
-
     type AuthData {
         user: User!
         token: String!
-    }
-
-    input workspaceInput {
-        name: String!
-        description: String
-        owner: ID!
-    }
-
-    input boardInput {
-        name: String!
-        description: String
-        owner: ID!
-        workspaceId: ID!
-        users: [UserRelation!]!
-        lists: [List!]!
-    }
-
-    input listInput {
-        name: String!
-        tasks: [Task!]!
-        joiners: [UserRelation!]!
-        watchers: [UserRelation!]!
     }
 
     type RootQuery {
@@ -152,8 +198,8 @@ module.exports = buildSchema(`
     }
 
     type RootMutation {
-        createUser(userInput: UserInput): User!
-        updateUser(userInput: UserUpdateInput): User!
+        createUser(userInput: userInput): User!
+        updateUser(userInput: userUpdateInput): User!
 
         createWorkspace(workspaceInput: workspaceInput): Workspace!
         updateWorkspace(workspaceInput: workspaceInput): Workspace!
@@ -169,4 +215,6 @@ module.exports = buildSchema(`
         query: RootQuery
         mutation: RootMutation
     }
+
+
 `);
