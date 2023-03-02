@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Trello API",
+    "title": "DnD API",
     "description": "",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
@@ -24,14 +24,14 @@
   ],
   "tags": [
     {
-      "name": "user",
+      "name": "UserController",
       "description": "Operations about user"
     }
   ],
   "paths": {
     "/users/register": {
       "post": {
-        "tags": ["user"],
+        "tags": ["UserController"],
         "summary": "Create user",
         "description": "Creating a new user in the system with the given data in the request body.",
         "operationId": "createUser",
@@ -41,6 +41,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "email": "apiteam@swagger.io",
+                "password": "password",
+                "role": "user",
+                "licence": "free",
+                "avatar": "http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
               }
             }
           }
@@ -61,17 +68,20 @@
     },
     "/users/login": {
       "post": {
-        "tags": ["user"],
+        "tags": ["UserController"],
         "summary": "Logs user into the system",
         "description": "Logging in a user with the given email and password.",
         "operationId": "loginUser",
-        "parameters": [],
         "requestBody": {
           "description": "Login user object with email and password",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/User"
+              },
+              "example": {
+                "email": "apiteam@swagger.io",
+                "password": "password"
               }
             }
           }
@@ -96,24 +106,32 @@
     },
     "/users/logout": {
       "post": {
-        "tags": ["user"],
+        "tags": ["UserController"],
         "summary": "Logs out current logged in user session",
         "description": "",
         "operationId": "logoutUser",
         "parameters": [],
         "responses": {
-          "default": {
-            "description": "successful operation"
+          "200": {
+            "description": "successful operation and logged out"
+          },
+          "401": {
+            "description": "Unauthorized access or invalid token"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/users": {
       "patch": {
-        "tags": ["user"],
+        "tags": ["UserController"],
         "summary": "Update user information",
         "description": "This can only be done by the logged in user.",
-        "operationId": "updateUserInformation",
+        "operationId": "updateUser",
         "parameters": [],
         "requestBody": {
           "description": "Updated user object",
@@ -139,25 +157,82 @@
           "400": {
             "description": "Invalid username supplied"
           },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "delete": {
-        "tags": ["user"],
-        "summary": "Delete user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteUser",
-        "parameters": [],
-        "responses": {
-          "400": {
-            "description": "Invalid username supplied"
+          "401": {
+            "description": "Unauthorized access or invalid token"
           },
           "404": {
             "description": "User not found"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["UserController"],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "Unauthorized access or invalid token"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/workspaces": {
+      "post": {
+        "tags": ["WorkspaceController"],
+        "summary": "Create workspace",
+        "description": "Creating a new workspace in the system with the given data in the request body.",
+        "operationId": "createWorkspace",
+        "requestBody": {
+          "description": "Created workspace object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Workspace"
+              },
+              "example": {
+                "name": "Workspace 1",
+                "description": "Workspace 1 description",
+                "type": "personal",
+                "boards": [],
+                "owner": "xxx_user_id_xxx"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workspace"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
@@ -195,9 +270,36 @@
             "description": "User Avatar",
             "example": "http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
           }
-        },
-        "xml": {
-          "name": "user"
+        }
+      },
+      "Workspace": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "The Workspace"
+          },
+          "description": {
+            "type": "string",
+            "example": "The Workspace Description"
+          },
+          "owner": {
+            "type": "string",
+            "example": "theUser_id",
+            "description": "The user id of the owner of the workspace"
+          },
+          "boards": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "board_id"
+            }
+          },
+          "type": {
+            "type": "string",
+            "example": "personal",
+            "description": "The type of the workspace (personal, team, enterprise)"
+          }
         }
       },
       "Tag": {
@@ -210,9 +312,6 @@
           "name": {
             "type": "string"
           }
-        },
-        "xml": {
-          "name": "tag"
         }
       },
       "ApiResponse": {
@@ -250,9 +349,10 @@
       }
     },
     "securitySchemes": {
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
         "in": "header"
       }
     }

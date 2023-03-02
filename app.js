@@ -7,6 +7,7 @@ const { protect, protectGraphql } = require('./middleware/auth');
 const swaggerDocument = require('./config/swagger.json');
 const { graphqlHTTP } = require('express-graphql');
 const graphql = require('./graphql');
+const swaggerFeed = require('./swagger-feed');
 require('colors');
 dotenv.config();
 
@@ -46,7 +47,6 @@ app.use(
   })
 );
 
-
 // create swagger docs
 const swaggerUi = require('swagger-ui-express');
 app.use(
@@ -78,6 +78,8 @@ app.get('/ping', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+app.use('/swagger', swaggerFeed);
 
 // define glabal error handler
 app.use((err, req, res, next) => {

@@ -25,6 +25,11 @@ const WorkspaceSchema = new mongoose.Schema(
         ref: 'Board',
       },
     ],
+    type: {
+      type: String,
+      enum: ['personal', 'team', 'enterprise'],
+      default: 'personal',
+    },
   },
   {
     timestamps: true,

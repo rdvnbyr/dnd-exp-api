@@ -4,8 +4,20 @@ const userRoute = require('./routes/user');
 const workspaceRoute = require('./routes/workspace');
 const boardRoute = require('./routes/board');
 
-console.log('Path: swagger-feed.js', __dirname);
+module.exports = (req, res, next) => {
+  console.log('Swagger Feed');
 
-userRoute.stack.forEach((layer) => {
-  console.log(layer.route);
-});
+  console.log('Path: swagger-feed.js', __dirname);
+
+  const swaggerDocument = {};
+  const docs = [];
+  workspaceRoute.stack.forEach((layer) => {
+    console.log(typeof layer.route);
+    if (layer.route) {
+      docs.push(layer.route);
+    }
+  });
+
+  res.json(docs);
+  // res.json(userRoute.stack);
+};
