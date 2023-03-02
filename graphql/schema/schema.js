@@ -56,12 +56,12 @@ module.exports = buildSchema(`
         name: String!
         description: String
         owner: ID!
-        boards: [ID!]!
+        boards: [ID]
     }
     input workspaceUpdateInput {
         name: String
         description: String
-        boards: [ID!]
+        boards: [ID]
     }
 
     type Attachment {
@@ -151,7 +151,7 @@ module.exports = buildSchema(`
         updatedAt: String!
         owner: ID!
         workspaceId: ID!
-        users: [Member!]!
+        members: [Member!]!
         lists: [List!]!
     }
     input boardInput {
@@ -159,13 +159,13 @@ module.exports = buildSchema(`
         description: String
         owner: ID!
         workspaceId: ID!
-        users: [memberInput!]!
+        members: [memberInput!]!
         lists: [listInput!]!
     }
     input boardUpdateInput {
         name: String
         description: String
-        users: [memberInput!]
+        members: [memberInput!]
         lists: [listInput!]
     }
 
@@ -180,6 +180,7 @@ module.exports = buildSchema(`
 
     type RootQuery {
         ping: Message!
+        isAuth: Message!
         login(email: String!, password: String!): AuthData!
         logout: Message!
         getUser: User!

@@ -5,6 +5,18 @@ const bcryptService = require('../../services/bcrypt');
 const validator = require('validator');
 
 module.exports = {
+  isAuth: async (req) => {
+    if (!req.isAuth) {
+      throw createError(401, 'Not authenticated');
+    }
+    const user = await User.findById(req.currentUser.id);
+    if (!user) {
+      throw createError(401, 'Not authenticated');
+    }
+    return {
+      message: 'Authenticated',
+    };
+  },
   createUser: async (args, req) => {
     const errors = [];
     const { email, password, username } = args.userInput;

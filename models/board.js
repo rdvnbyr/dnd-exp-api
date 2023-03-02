@@ -19,7 +19,7 @@ const BoardSchema = new mongoose.Schema(
     },
 
     lists: [ListSchema],
-    users: [MemberSchema],
+    members: [MemberSchema],
 
     workspaceId: {
       type: mongoose.Schema.ObjectId,

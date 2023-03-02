@@ -2,22 +2,21 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const db = require('./config/datasource');
+const connectDB = require('./config/datasource');
 const { protect, protectGraphql } = require('./middleware/auth');
 const swaggerDocument = require('./config/swagger.json');
 const { graphqlHTTP } = require('express-graphql');
 const graphql = require('./graphql');
-const swaggerFeed = require('./swagger-feed');
 require('colors');
+
 dotenv.config();
 
 const app = express();
-// Connect to database
-db();
-// use cors
-app.use(cors());
+
+connectDB();
 
 // Init Middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -65,7 +64,7 @@ app.get('/ping', (req, res) => {
   const host = req.protocol + '://' + req.get('host') + '/api';
   res.json({
     status: 200,
-    message: 'Welcome to the Dart Api',
+    message: 'Welcome to the DnD Api',
     api: host,
     controllers: {
       workspaces: host + '/workspaces',
@@ -78,8 +77,6 @@ app.get('/ping', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
-app.use('/swagger', swaggerFeed);
 
 // define glabal error handler
 app.use((err, req, res, next) => {
