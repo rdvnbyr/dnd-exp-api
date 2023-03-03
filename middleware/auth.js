@@ -11,8 +11,6 @@ const protect = async (req, res, next) => {
       authorization.split(' ').length === 2
     ) {
       token = authorization.split(' ')[1];
-    } else {
-      token = req.query['access_token'];
     }
     if (!token && typeof token != 'string')
       throw createError(401, 'Authentication failed');
@@ -34,8 +32,6 @@ const protectGraphql = async (req, res, next) => {
       authorization.split(' ').length === 2
     ) {
       token = authorization.split(' ')[1];
-    } else {
-      token = req.query['access_token'];
     }
     if (!token && typeof token != 'string') {
       req.isAuth = false;

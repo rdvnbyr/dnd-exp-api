@@ -1,7 +1,8 @@
-const Board = require('../../models/board');
-const Workspace = require('../../models/workspace');
 const createError = require('http-errors');
 const validator = require('validator');
+const Board = require('../../models/board');
+const Workspace = require('../../models/workspace');
+const jwtService = require('../../services/jwt');
 
 module.exports = {
   createWorkspace: async (args, req) => {

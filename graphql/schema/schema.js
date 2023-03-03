@@ -10,8 +10,8 @@ module.exports = buildSchema(`
     }
     input memberInput {
         userId: ID!
-        role: String!
-        permissions: [String!]!
+        role: String
+        permissions: [String]
     }
 
     type User {
@@ -50,18 +50,16 @@ module.exports = buildSchema(`
         description: String
         createdAt: String!
         updatedAt: String!
-        owner: User!
+        owner: ID!
     }
     input workspaceInput {
         name: String!
         description: String
         owner: ID!
-        boards: [ID]
     }
     input workspaceUpdateInput {
         name: String
         description: String
-        boards: [ID]
     }
 
     type Attachment {
@@ -86,16 +84,16 @@ module.exports = buildSchema(`
         createdAt: String!
         updatedAt: String!
         userId: User!
-        attachments: [Attachment!]!
+        attachments: [Attachment]
     }
     input activityInput {
         comment: String!
         userId: ID!
-        attachments: [ID!]
+        attachments: [ID]
     }
     input activityUpdateInput {
         comment: String
-        attachments: [ID!]
+        attachments: [ID]
     }
 
     type Task {
@@ -104,32 +102,32 @@ module.exports = buildSchema(`
         description: String
         createdAt: String!
         updatedAt: String!
-        labels: [String!]
-        attachments: [Attachment!]
+        labels: [String]
+        attachments: [Attachment]
         members: [Member!]
-        activities: [Activity!]
+        activities: [Activity]
     }
     input taskInput {
         name: String!
         description: String
-        labels: [String!]
-        attachments: [ID!]
-        members: [memberInput!]
-        activities: [activityInput!]
+        labels: [String]
+        attachments: [ID]
+        members: [memberInput]
+        activities: [activityInput]
     }
     input taskUpdateInput {
         name: String
         description: String
-        labels: [String!]
-        attachments: [ID!]
-        members: [memberInput!]
-        activities: [activityInput!]
+        labels: [String]
+        attachments: [ID]
+        members: [memberInput]
+        activities: [activityInput]
     }
 
     type List {
         _id: ID!
         name: String!
-        tasks: [Task!]!
+        tasks: [Task]!
         members: [Member!]
     }
     input listInput {
@@ -151,7 +149,7 @@ module.exports = buildSchema(`
         updatedAt: String!
         owner: ID!
         workspaceId: ID!
-        members: [Member!]!
+        members: [Member]!
         lists: [List!]!
     }
     input boardInput {
@@ -159,14 +157,14 @@ module.exports = buildSchema(`
         description: String
         owner: ID!
         workspaceId: ID!
-        members: [memberInput!]!
-        lists: [listInput!]!
+        members: [memberInput]!
+        lists: [listInput]!
     }
     input boardUpdateInput {
         name: String
         description: String
-        members: [memberInput!]
-        lists: [listInput!]
+        members: [memberInput]
+        lists: [listInput]
     }
 
     type Message {
@@ -187,12 +185,12 @@ module.exports = buildSchema(`
         deleteUser: Message!
 
         getWorkspaces: [Workspace!]!
-        getWorkspace: Workspace!
-        deleteWorkspace: Message!
+        getWorkspace(workspaceId: ID!): Workspace!
+        deleteWorkspace(workspaceId: ID!,access_token: String): Message!
 
         getBoards: [Board!]!
-        getBoard(boardId: ID!): Board!
-        deleteBoard(boardId: ID!): Message!
+        getBoard(boardId: ID!,access_token: String): Board!
+        deleteBoard(boardId: ID!,access_token: String): Message!
 
         getLists: [List!]!
         deleteListById(boardId: ID!, listId: ID!): Message!
@@ -207,9 +205,9 @@ module.exports = buildSchema(`
 
         createBoard(boardInput: boardInput): Board!
         updateBoard(boardInput: boardInput): Board!
-        createList(listInput: listInput): List!
-        updateListById(listInput: listInput): List!
-        updateBoardLists(listInput: listInput): List!
+        createList(listInput: listInput): Board!
+        updateListById(listInput: listInput): Board!
+        updateBoardLists(listInput: listInput): Board!
     }
 
     schema {
