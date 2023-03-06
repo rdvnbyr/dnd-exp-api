@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs').promises;
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/datasource');
@@ -76,6 +77,41 @@ app.get('/ping', (req, res) => {
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/feedback', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/feedback', 'index.html'));
+});
+
+app.post('/feed/create', async (req, res) => {
+  try {
+    const { title, email, comment } = req.body;
+    const feedback = {
+      title,
+      email,
+      comment,
+    };
+    const data = await fs.readFile(__dirname + '/data/feedback.json', 'utf8');
+    if (!data) {
+      await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify([feedback]));
+    } else {
+      const feedbacks = JSON.parse(data);
+      if (feedbacks.find((fb) => fb.email === email)) {
+        return res.redirect('/feedback/error');
+      }
+      feedbacks.push(feedback);
+      await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify(feedbacks));
+    }
+
+    res.redirect('/feedback/success');
+  } catch (error) {
+    console.log(error);
+    res.redirect('/feedback/error');
+  }
+});
+
+app.get('/feedback/success', (req, res) => {
+  res.sendFile(path.join(__dirname, 'data', 'feedback.json'));
 });
 
 // define glabal error handler
