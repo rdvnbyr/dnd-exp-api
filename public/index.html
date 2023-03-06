@@ -5,13 +5,70 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style/style.css" />
-    <title>Document</title>
+    <title>Express-Server</title>
   </head>
   <body>
+    <header>
+      <h1 class="header-title">Node-Express Runtime Application</h1>
+      <p class="header-subtitle">
+        This is a Node-Express Runtime Application. It is a simple application that
+        demonstrates the use of Node-Express to create a REST API and a GraphQL API.
+      </p>
+    </header>
     <main>
-      <h1>ExpressJs</h1>
-      <a class="btn btn-primary" href="/explorer"> Rest Explorer </a>
-      <a class="btn btn-secodary" href="/graphql"> GraphQL </a>
+      <div class="headline">
+        <p>
+          This is a Node-Express Runtime Application. It is a simple application that
+          demonstrates the use of Node-Express to create a REST API.The application is a
+          simple feedback application that allows users to submit feedback. The feedback
+          is stored in a MongoDB database.
+        </p>
+        <p>
+          The application has the following features:
+        </p>
+      </div>
+      <div class="cards">
+        <a href="/explorer">
+          <div class="card">
+            <div class="card-header">
+              <h2>Rest Explorer</h2>
+            </div>
+            <div class="card-body">
+              <p>
+                The Rest Explorer allows you to explore the REST API. You can use the Rest
+                Explorer to create, read, update, and delete.
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/graphql">
+          <div class="card">
+            <div class="card-header">
+              <h2>GraphQL</h2>
+            </div>
+            <div class="card-body">
+              <p>
+                The GraphQL API allows you to create, read, update, and delete.
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <a href="/feedback">
+          <div class="card">
+            <div class="card-header">
+              <h2>Feedback</h2>
+            </div>
+            <div class="card-body">
+              <p>
+                The Feedback page allows you to submit feedback. The feedback is stored in
+                a MongoDB database.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
     </main>
   </body>
 </html>

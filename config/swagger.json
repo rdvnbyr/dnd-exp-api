@@ -5,11 +5,7 @@
     "description": "",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
-      "email": "apiteam@swagger.io"
-    },
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      "email": "byrridvan@gmail.com"
     },
     "version": "1.0.11"
   },
