@@ -49,6 +49,7 @@ app.use(
 
 // create swagger docs
 const swaggerUi = require('swagger-ui-express');
+const Feedback = require('./models/feedback');
 app.use(
   '/explorer',
   swaggerUi.serve,
@@ -86,32 +87,38 @@ app.get('/feedback', (req, res) => {
 app.post('/feed/create', async (req, res) => {
   try {
     const { title, email, comment } = req.body;
-    const feedback = {
+    if (!title || !email || !comment) {
+      return res.redirect('/feedback/error');
+    }
+    // const data = await fs.readFile(__dirname + '/data/feedback.json', 'utf8');
+    // if (!data) {
+    //   await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify([feedback]));
+    // } else {
+    //   const feedbacks = JSON.parse(data);
+    //   if (feedbacks.find((fb) => fb.email === email)) {
+    //     return res.redirect('/feedback/error');
+    //   }
+    //   feedbacks.push(feedback);
+    //   await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify(feedbacks));
+    // }
+    const feedback = new Feedback({
       title,
       email,
       comment,
-    };
-    const data = await fs.readFile(__dirname + '/data/feedback.json', 'utf8');
-    if (!data) {
-      await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify([feedback]));
-    } else {
-      const feedbacks = JSON.parse(data);
-      if (feedbacks.find((fb) => fb.email === email)) {
-        return res.redirect('/feedback/error');
-      }
-      feedbacks.push(feedback);
-      await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify(feedbacks));
-    }
-
+    });
+    await feedback.save();
     res.redirect('/feedback/success');
   } catch (error) {
-    console.log(error);
     res.redirect('/feedback/error');
   }
 });
 
 app.get('/feedback/success', (req, res) => {
-  res.sendFile(path.join(__dirname, 'data', 'feedback.json'));
+  // res.sendFile(path.join(__dirname, 'data', 'feedback.json'));
+  res.sendFile(path.join(__dirname, 'public/feedback', 'success.html'));
+});
+app.get('/feedback/error', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/feedback', 'error.html'));
 });
 
 // define glabal error handler
