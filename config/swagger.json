@@ -229,6 +229,36 @@
             "bearerAuth": []
           }
         ]
+      },
+      "get": {
+        "tags": ["WorkspaceController"],
+        "summary": "Get workspaces of the logged in user",
+        "description": "Get all workspaces of the logged in user.",
+        "operationId": "getWorkspaces",
+        "requestBody": {},
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Workspace"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access or invalid token"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
