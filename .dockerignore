@@ -1,4 +1,22 @@
 
 node_modules
 
+Dockerfile
+
+.git
+
 yarn.lock
+
+# any log file
+application.log
+*.log
+
+# Dockerfile
+Dockerfile
+
+# OS generated files #
+.DS_Store
+.DS_Store?
+
+# files
+storage

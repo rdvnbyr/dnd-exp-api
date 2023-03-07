@@ -1,13 +1,9 @@
-# Install nodejs and yarn
-# Install Docker Desktop
-# first build the image with the command$: docker build -t dnd:latest .
-# then run the container with the command$: docker run -p 8000 --env-file .env -d --rm --name dndapp -v feedback:/app/data -v [absolut path]:/app -v /app/node_modules dnd:latest
-
-# docker login
-# docker build -t dnd:volumes .
-# docker run -p 8000 --env-file .env -d --rm --name dndapp -v feedback:/app/data -v "C:\Users\bayir\Desktop\devs\ppapp\dnd\express:/app" -v /app/node_modules dnd:volumes
-# docker pull mongo
-# docker run -p 27017:27017 --name mongodb -d mongo
+# Install nodejs and yarn from https://nodejs.org/en/download/ and https://classic.yarnpkg.com/en/docs/install/#windows-stable
+# Install Docker Desktop: https://www.docker.com/products/docker-desktop
+# docker login --username="username" --password="password" "docker hub url"
+# Create Image: docker build -t "image name":"tag" .
+# Run MongoDB detach mode: docker run -p 27017:27017 --name "container name" -d mongo
+# Run container detach mode: docker run -p 8000 --env-file .env -d --rm --name "conatiner name" -v "Absolute path source:/app" -v /app/node_modules "image name":"tag"
 
 FROM node:18-alpine
 
@@ -29,6 +25,6 @@ ENV PORT=$DEFAULT_PORT
 
 EXPOSE $PORT
 
-# VOLUME [ "feedback:/app/data", "C:\Users\bayir\Desktop\devs\ppapp\dnd\express:/app" , "/app/node_modules" ]
+# VOLUME [ "C:\Users\bayir\Desktop\devs\ppapp\dnd\express:/app" , "/app/node_modules" ]
 
 CMD [ "yarn", "start" ]

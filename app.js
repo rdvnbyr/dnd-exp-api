@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs').promises;
+const fs = require('fs');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/datasource');
@@ -9,6 +9,11 @@ const swaggerDocument = require('./config/swagger.json');
 const { graphqlHTTP } = require('express-graphql');
 const graphql = require('./graphql');
 require('colors');
+const morgan = require('morgan');
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'application.log'), {
+  flags: 'a',
+});
 
 dotenv.config();
 
@@ -21,6 +26,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(morgan('combined', { stream: accessLogStream }));
 
 // Use routes
 app.use('/api/workspaces', protect, require('./routes/workspace'));
@@ -90,17 +96,6 @@ app.post('/feed/create', async (req, res) => {
     if (!title || !email || !comment) {
       return res.redirect('/feedback/error');
     }
-    // const data = await fs.readFile(__dirname + '/data/feedback.json', 'utf8');
-    // if (!data) {
-    //   await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify([feedback]));
-    // } else {
-    //   const feedbacks = JSON.parse(data);
-    //   if (feedbacks.find((fb) => fb.email === email)) {
-    //     return res.redirect('/feedback/error');
-    //   }
-    //   feedbacks.push(feedback);
-    //   await fs.writeFile(__dirname + '/data/feedback.json', JSON.stringify(feedbacks));
-    // }
     const feedback = new Feedback({
       title,
       email,
