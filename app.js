@@ -8,8 +8,8 @@ const { protect, protectGraphql } = require('./middleware/auth');
 const swaggerDocument = require('./config/swagger.json');
 const { graphqlHTTP } = require('express-graphql');
 const graphql = require('./graphql');
-require('colors');
 const morgan = require('morgan');
+require('colors');
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'application.log'), {
   flags: 'a',
