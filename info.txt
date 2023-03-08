@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    env_file:
+      - ./backend/.env
+    container_name: mongodb
+  
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - DEFAULT_PORT=8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - logs:/app/logs
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mongodb
+    container_name: backend
+    stdin_open: true
+    tty: true
+    
+  # frontend:
+  #   build: 
+  #     context: ./tsx-front
+  #     dockerfile: Dockerfile
+  #     args:
+  #       - DEFAULT_PORT=3000
+  #   ports:
+  #     - "3000:3000"
+  #   volumes: 
+  #     - ./tsx-front/src:/app/src
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - backend
+
+volumes:
+  data:
+  logs:

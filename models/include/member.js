@@ -1,6 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const permissionsEnum = [
+  'READ',
+  'WRITE',
+  'DELETE',
+  'SHARE',
+  'UPLOAD_FILES',
+  'MANAGE_MEMBERS',
+  'MANAGE_LISTS',
+  'MANAGE_TASKS',
+  'MANAGE_BOARD',
+  '_SUPER_ADMIN_PERMISSION_',
+];
+
 const MemberSchema = new Schema({
   _id: false,
 
@@ -18,16 +31,7 @@ const MemberSchema = new Schema({
 
   permissions: {
     type: [String],
-    default: [
-      'READ',
-      'WRITE',
-      'DELETE',
-      'SHARE',
-      'UPLOAD_FILES',
-      'MANAGE_MEMBERS',
-      'MANAGE_LISTS',
-      'MANAGE_TASKS',
-    ],
+    default: ['_SUPER_ADMIN_PERMISSION_'],
   },
 });
 
