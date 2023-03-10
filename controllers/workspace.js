@@ -26,6 +26,11 @@ const getWorkspaces = async (req, res, next) => {
   try {
     const workspaces = await Workspace.find({
       owner: req.currentUser.id,
+    }).populate('boards', {
+      name: true,
+      createdAt: true,
+      updatedAt: true,
+      _id: true,
     });
 
     res.status(200).json(workspaces);
