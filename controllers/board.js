@@ -51,7 +51,7 @@ const getBoards = async (req, res, next) => {
 };
 
 const getBoard = async (req, res, next) => {
-  console.log("board: ", req.params.boardId);
+  console.log('board: ', req.params.boardId);
   try {
     const board = await Board.findById(req.params.boardId);
     if (!board) {
@@ -91,7 +91,9 @@ const deleteBoard = async (req, res, next) => {
       throw createError(404, 'Board not found');
     }
     if (
-      !board.members.find((user) => user.userId.toString() == req.currentUser.id.toString())
+      !board.members.find(
+        (user) => user.userId.toString() == req.currentUser.id.toString()
+      )
     ) {
       throw createError(401, 'Not authorized to access this board resource.');
     }
@@ -150,7 +152,6 @@ const updateListById = async (req, res, next) => {
 
     const newBoard = await board.save();
     res.status(200).json(newBoard);
-
   } catch (err) {
     next(err);
   }
@@ -184,7 +185,9 @@ const deleteListById = async (req, res, next) => {
       throw createError(404, 'Board not found');
     }
     if (
-      !board.members.find((user) => user.userId.toString() == req.currentUser.id.toString())
+      !board.members.find(
+        (user) => user.userId.toString() == req.currentUser.id.toString()
+      )
     ) {
       throw createError(401, 'Not authorized to access this board resource.');
     }
@@ -200,6 +203,116 @@ const deleteListById = async (req, res, next) => {
   }
 };
 
+const createTask = async (req, res, next) => {
+  try {
+    const board = await Board.findById(req.params.boardId);
+    if (!board) {
+      throw createError(404, 'Board not found');
+    }
+    if (
+      !board.members.find(
+        (user) => user.userId.toString() == req.currentUser.id.toString()
+      )
+    ) {
+      throw createError(401, 'Not authorized to access this board resource.');
+    }
+    const list = board.lists.id(req.params.listId);
+    if (!list) {
+      throw createError(404, 'List not found');
+    }
+    list.tasks.push(req.body);
+    const newBoard = await board.save();
+    res.status(200).json(newBoard);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateTaskById = async (req, res, next) => {
+  try {
+    const board = await Board.findById(req.params.boardId);
+    if (!board) {
+      throw createError(404, 'Board not found');
+    }
+    if (
+      !board.members.find(
+        (user) => user.userId.toString() == req.currentUser.id.toString()
+      )
+    ) {
+      throw createError(401, 'Not authorized to access this board resource.');
+    }
+    const list = board.lists.id(req.params.listId);
+    if (!list) {
+      throw createError(404, 'List not found');
+    }
+    const task = list.tasks.id(req.params.taskId);
+    if (!task) {
+      throw createError(404, 'Task not found');
+    }
+    Object.assign(task, req.body);
+    const newBoard = await board.save();
+    res.status(200).json(newBoard);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteTaskById = async (req, res, next) => {
+  try {
+    const board = await Board.findById(req.params.boardId);
+    if (!board) {
+      throw createError(404, 'Board not found');
+    }
+    if (
+      !board.members.find(
+        (user) => user.userId.toString() == req.currentUser.id.toString()
+      )
+    ) {
+      throw createError(401, 'Not authorized to access this board resource.');
+    }
+    const list = board.lists.id(req.params.listId);
+    if (!list) {
+      throw createError(404, 'List not found');
+    }
+    const task = list.tasks.id(req.params.taskId);
+    if (!task) {
+      throw createError(404, 'Task not found');
+    }
+    await task.remove();
+    const newBoard = await board.save();
+    res.status(200).json(newBoard);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTaskById = async (req, res, next) => {
+  try {
+    const board = await Board.findById(req.params.boardId);
+    if (!board) {
+      throw createError(404, 'Board not found');
+    }
+    if (
+      !board.members.find(
+        (user) => user.userId.toString() == req.currentUser.id.toString()
+      )
+    ) {
+      throw createError(401, 'Not authorized to access this board resource.');
+    }
+    const list = board.lists.id(req.params.listId);
+    if (!list) {
+      throw createError(404, 'List not found');
+    }
+    const task = list.tasks.id(req.params.taskId);
+    if (!task) {
+      throw createError(404, 'Task not found');
+    }
+    res.status(200).json(task);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createBoard,
   getBoards,
@@ -210,4 +323,8 @@ module.exports = {
   updateListById,
   updateLists,
   deleteListById,
+  createTask,
+  updateTaskById,
+  deleteTaskById,
+  getTaskById,
 };
